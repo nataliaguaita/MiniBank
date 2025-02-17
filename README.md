@@ -17,6 +17,7 @@ O projeto deve conter classes representando os clientes e as contas bancárias. 
 - Nome
 - CPF
 - E-mail
+- Telefone
 
 ### Conta Bancária
 - Agência
@@ -34,7 +35,8 @@ O sistema apresentará o seguinte menu no console:
 3 - Depósito
 4 - Saque
 5 - Transferência
-6 - Sair
+6 - Consultar dados da conta
+0 - Sair
 ```
 
 ## Requisitos
