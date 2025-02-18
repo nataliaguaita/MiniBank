@@ -1,17 +1,22 @@
 package br.com.minibank.clientes;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ContaBancaria extends Cliente {
 
     private static int contadorContas = 1000;
-    private final int numeroConta;
+    private int numeroConta;
     private final int numeroAgencia = 123;
     private double saldo;
+    private final ArrayList<ContaBancaria> contas = new ArrayList<>();
 
     public ContaBancaria(String nome, String cpf, String email, String telefone, double saldoInicial) {
         super(nome, cpf, email, telefone);
         this.saldo = saldoInicial;
         this.numeroConta = contadorContas++;
     }
+    public ContaBancaria() {}
 
     public int getNumeroConta() {
         return numeroConta;
@@ -23,6 +28,50 @@ public class ContaBancaria extends Cliente {
 
     public double getSaldo() {
         return saldo;
+    }
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public void adicionarConta(String nome, String cpf, String email, String telefone, double saldoInicial) {
+        ContaBancaria novaConta = new ContaBancaria(nome, cpf, email, telefone, saldoInicial);
+        contas.add(novaConta);
+        System.out.println("---- Conta bancária criada com sucesso! ----");
+        System.out.println("Número da sua conta: " + novaConta.getNumeroConta());
+        System.out.println("Número da sua agência: " + novaConta.getNumeroAgencia());
+        System.out.println("Saldo inicial da conta: R$" + saldoInicial);
+    }
+
+    public void removerConta(String numeroConta) {
+        try {
+            int numeroContaInt = Integer.parseInt(numeroConta);
+            Iterator<ContaBancaria> iterator = contas.iterator();
+            while (iterator.hasNext()) {
+                ContaBancaria conta = iterator.next();
+                if (conta.getNumeroConta() == numeroContaInt) {
+                    iterator.remove();
+                    System.out.println("Conta bancária removida com sucesso!");
+                    return;
+                }
+            }
+            System.out.println("Conta não encontrada.");
+        } catch (NumberFormatException e) {
+            System.out.println("Número de conta inválido.");
+        }
+    }
+
+    public ContaBancaria buscarConta(String numeroConta) {
+        try {
+            int numeroContaInt = Integer.parseInt(numeroConta);
+            for (ContaBancaria conta : contas) {
+                if (conta.getNumeroConta() == numeroContaInt) {
+                    return conta;
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Número de conta inválido.");
+        }
+        return null;
     }
 
     public void depositar(double valor) {
