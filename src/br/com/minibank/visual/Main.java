@@ -1,14 +1,11 @@
 package br.com.minibank.visual;
-
-import br.com.minibank.clientes.Cliente;
 import br.com.minibank.clientes.ContaBancaria;
-
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Cliente cliente = new Cliente();
+        ContaBancaria contaBancaria = new ContaBancaria( );
 
         while (true) {
             System.out.println("\n---- MENU ----");
@@ -26,41 +23,51 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.print("Qual o nome completo do titular? ");
-                    String nome = scanner.nextLine();
+                    contaBancaria.setNome(scanner.nextLine());
                     System.out.print("Qual seu CPF? ");
-                    String cpf = scanner.nextLine();
+                    contaBancaria.setCpf(scanner.nextLine());
                     System.out.print("Qual seu melhor e-mail? ");
-                    String email = scanner.nextLine();
+                    contaBancaria.setEmail(scanner.nextLine());
                     System.out.print("Qual seu telefone? ");
-                    String telefone = scanner.nextLine();
+                    contaBancaria.setTelefone(scanner.nextLine());
                     System.out.print("Qual será o saldo inicial? R$ ");
-                    double saldoInicial = scanner.nextDouble();
-                    cliente.adicionarConta(nome, cpf, email, telefone, saldoInicial);
+                    contaBancaria.setSaldo(scanner.nextDouble());
+                    contaBancaria.adicionarConta(
+                        contaBancaria.getNome(),
+                        contaBancaria.getCpf(),
+                        contaBancaria.getEmail(),
+                        contaBancaria.getTelefone(),
+                        contaBancaria.getSaldo()
+                    );
                     break;
 
                 case 2:
                     System.out.print("Informe o número da conta a ser excluída: ");
                     String contaExcluir = scanner.nextLine();
-                    cliente.removerConta(contaExcluir);
+                    ContaBancaria contaEx = contaBancaria.buscarConta(contaExcluir);
+                    if (contaEx == null) {
+                        System.out.println("Conta não encontrada.");
+                    } else {
+                    contaBancaria.removerConta(contaExcluir);}
                     break;
 
                 case 3:
                     System.out.print("Informe o número da conta para depósito: ");
                     String contaDeposito = scanner.nextLine();
-                    ContaBancaria contaDep = cliente.buscarConta(contaDeposito);
+                    ContaBancaria contaDep = contaBancaria.buscarConta(contaDeposito);
                     if (contaDep != null) {
                         System.out.print("Valor do depósito: R$ ");
                         double valorDep = scanner.nextDouble();
                         contaDep.depositar(valorDep);
                     } else {
-                        System.out.println("Conta não encontrada.");
+                        System.out.println("Conta não encontrada. Tente novamente.");
                     }
                     break;
 
                 case 4:
                     System.out.print("Informe o número da conta para saque: ");
                     String contaSaque = scanner.nextLine();
-                    ContaBancaria contaSac = cliente.buscarConta(contaSaque);
+                    ContaBancaria contaSac = contaBancaria.buscarConta(contaSaque);
                     if (contaSac != null) {
                         System.out.print("Valor do saque: R$ ");
                         double valorSaq = scanner.nextDouble();
@@ -73,7 +80,7 @@ public class Main {
                 case 5:
                     System.out.print("Informe o número da conta de origem: ");
                     String contaOrigem = scanner.nextLine();
-                    ContaBancaria contaOri = cliente.buscarConta(contaOrigem);
+                    ContaBancaria contaOri = contaBancaria.buscarConta(contaOrigem);
 
                     if (contaOri != null) {
                         System.out.print("Informe o número da conta de destino: ");
@@ -84,7 +91,7 @@ public class Main {
                             break;
                         }
 
-                        ContaBancaria contaDest = cliente.buscarConta(contaDestino);
+                        ContaBancaria contaDest = contaBancaria.buscarConta(contaDestino);
                         if (contaDest != null) {
                             System.out.print("Valor da transferência: R$ ");
                             double valorTransf = scanner.nextDouble();
@@ -101,7 +108,7 @@ public class Main {
                 case 6:
                     System.out.print("Informe o número da conta para consultar os dados: ");
                     String contaDados = scanner.nextLine();
-                    ContaBancaria contaDad = cliente.buscarConta(contaDados);
+                    ContaBancaria contaDad = contaBancaria.buscarConta(contaDados);
                     if (contaDad != null) {
                         contaDad.consultarConta();
                     } else {
